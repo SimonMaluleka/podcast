@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { AppContextProvider } from './context/AppContext.tsx'
-import { ThemeProvider } from '@emotion/react'
 import { theme } from './helpers/theme.ts'
+import { ThemeProvider } from '@emotion/react'
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -12,7 +13,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>      
-    </AppContextProvider>
-    
-  </React.StrictMode>,
+    </AppContextProvider>    
+  </React.StrictMode>
 )

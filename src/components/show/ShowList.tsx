@@ -6,18 +6,18 @@ import { Box, Typography } from '@mui/material';
 
 const ShowList = () => {
     const { shows, isLoading } = useAppContext()
-    // const theme = useTheme();
+    //const theme = useTheme();
     // const isLargeScreen = useMediaQuery(theme.breakpoints.up('sm'));
     // const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <Box sx={{width: "100%"}}>
-       <Grid container spacing={2} columns={{ xs: 1, sm: 4, md: 12 }}>
+      <Grid container spacing={2} columns={{ xs: 1, sm: 4, md: 12 }}>
         { 
-            isLoading ? <Typography>Loading...</Typography> :shows.map((show: Show)=>(
-                <ShowCard {...show}/>
-            ))
+          isLoading ? <Typography>Loading...</Typography> :shows.map((show: Show)=>(
+              <ShowCard {...show}/>
+          ))
         }        
-    </Grid> 
+      </Grid> 
     </Box>
     
         

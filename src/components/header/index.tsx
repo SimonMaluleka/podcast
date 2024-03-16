@@ -2,6 +2,7 @@ import { AppBar, Box, Button, CssBaseline, Drawer, IconButton, List, ListItem, L
 import { MenuIcon } from "./MenuIcon"
 import { useAppContext } from "../../context/AppContext"
 import Logo from'../../assets/logo.png'
+import { Menu } from "@mui/icons-material";
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
@@ -78,7 +79,7 @@ const Header = (props: Props) => {
   const container = window !== undefined ? () => window().document.body : undefined;
   
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', width:{sm: '100%'} }}>
       <CssBaseline />
       <AppBar component="nav">
         <Toolbar>
@@ -113,7 +114,8 @@ const Header = (props: Props) => {
                     onClick={handleDrawerToggle}
                     sx={{display: { sm: 'none' } }}
                     >
-                    <MenuIcon setMobileMenuOpen={setMobileMenuOpen} />
+                    <span className="sr-only" hidden>Open main menu</span>
+                    <Menu  className={`h-6 w-12 text-[#ffc965]`} aria-hidden="true" />
                 </IconButton>
           </Box>
           

@@ -1,19 +1,18 @@
 import { useEffect, useState} from 'react'
-//import Box from '@mui/material/Box'
 import Slide from '@mui/material/Slide'
 import Stack  from '@mui/material/Stack'
 import { Show, useAppContext } from '../../context/AppContext'
-import ShowCard from '../show/ShowCard'
 import { Container, IconButton, Box } from '@mui/material'
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import CarouselShowPreview from './CarouselShowPreview'
 
 const Carousel = () => {
     const { shows } = useAppContext()
     const [currentPage, setCurrentPage ] = useState(0)
     const [cards, setCards] = useState<Show[]>([])
     const cardsPerPage = 4
-    const containerWidth = cardsPerPage * 250;
+    const containerWidth = cardsPerPage * 450;
     // const duplicateCards: React.ReactElement[] = Array.from(
     //     {length: 10},
     //     (_, index) => <img src={''} alt='' key={index}/>
@@ -28,24 +27,36 @@ const Carousel = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
-    useEffect(()=>{
+  // setInterval(()=>{
+  //     if(currentPage < 5 ) {
+  //       setCurrentPage((prev)=>prev+1)}
+  //       else if(currentPage >=5){
+  //         setCurrentPage((prev)=>prev-1) 
+  //     } 
+  // }, 5000)
+
+    useEffect(()=>{  
+      const trending: Show[] = []
+      for(let i=0; i<=24;i++){
+        trending.push(shows[Math.random()])
+        i++
+      }   
         setCards(shows)
     },[shows])
+
   return (
-    <Container sx={{mt: 20, display: 'flex',}}>
+    <Container sx={{my: 4, display: 'flex'}}>
       <IconButton
         onClick={handlePrevPage}
-        sx={{ margin: 5 }}
+        sx={{ marginX: 5, display: { xs: 'none', sm: 'block' }}}
         disabled={currentPage === 0}
+        disableRipple
       >
         {/* this is the button that will go to the previous page you can change these icons to whatever you wish*/}
         <NavigateBeforeIcon />
       </IconButton>    
-      <Box sx={{ width: `${containerWidth}px`, height: "8%", margin: "auto" }}>
-          {/* this is the box that holds the cards and the slide animation,
-          in this implementation the card is already constructed but in later versions you will see how the
-          items you wish to use will be dynamically created with the map method*/}
-          {cards.map((card, index) => (
+      <Box sx={{ width: `${containerWidth}px`, margin: "auto" }}>
+          {cards.map((_, index) => (
             <Box
               key={`card-${index}`}
               sx={{
@@ -71,7 +82,7 @@ const Carousel = () => {
                     )
                     .map((show: Show) => (
                       <Box key={show.id}>
-                        <ShowCard {...show} />
+                        <CarouselShowPreview {...show} />
                       </Box>
                     ))}
                 </Stack>
@@ -83,7 +94,8 @@ const Carousel = () => {
         <IconButton
           onClick={handleNextPage}
           sx={{
-            margin: 5,
+            marginX: 5,
+            display: { xs: 'none', sm: 'block' }
           }}
           disabled={
             currentPage >= Math.ceil((cards.length || 0) / cardsPerPage) - 1

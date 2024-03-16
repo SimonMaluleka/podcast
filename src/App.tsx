@@ -1,19 +1,23 @@
-import Carousel from './components/carousel/Carousel'
-import { Box, Toolbar } from '@mui/material'
 import Header  from './components/header'
-import ShowList from './components/show/ShowList'
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
+import Home from './pages/Home'
+import ShowDetailsPage from './pages/ShowDetailsPage'
 
+const sectionTitles = [
+  "Top trending podcasts",
+  "Shows to try"
+]
 
 function App() {
+  
   return (
-    <>
-      <Header />
-      <Carousel />       
-      <Toolbar sx={{ height: 160 }}/>
-      <Box sx={{marginX: 2}}>
-        <ShowList />
-      </Box>     
-    </>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path=":id" element={<ShowDetailsPage />}/>     
+        </Routes>
+      </BrowserRouter>      
   )
 }
 

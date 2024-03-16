@@ -1,6 +1,6 @@
 import { Show } from "../../context/AppContext";
 import Grid from '@mui/material/Unstable_Grid2';
-import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardMedia, Chip, Typography } from '@mui/material';
 
 const ShowCard = (show: Show) => { 
   const genreMap = {
@@ -18,33 +18,31 @@ const ShowCard = (show: Show) => {
   return (
     <Grid xs={4} key={show.id}>
         <Card variant="outlined" sx={{
-          background: '#ffc965', 
-          color:"white",
           display: "flex",
           flexDirection: "column",
           height: "100%"
           }}>
-            <CardContent className='flex flex-col text-white items-center'>
-              <CardMedia
+             <CardMedia
                 component="img"
+                loading="eager"
                 alt={show.title}
                 image={show.image}
-                sx={{ width: {xs: "100px", sm:"100vw"}, margin: "auto", borderRadius: 50 }}
               />
+            <CardContent className='flex flex-col items-center'>
               <Typography gutterBottom variant="h5" component="div">
                   { show.title}
               </Typography>
-              <Button variant="contained" sx={{fontSize: 12, width: "80%", border:" 1px solid #6467AA"}}>View Seasons {"("+show.seasons+")"}</Button>
+              <Chip variant="filled" label={`Seasons ${show.seasons}`} sx={{color:"white", background: '#ffc965'}} />
               {
                 show.description.length > 100 ? 
                   (<Typography sx={{display:"flex", marginTop:1, flexDirection:"column", justifyContent:"center"}}>{show.description.substring(0,100)+"... "}<Button sx={{fontSize: 12}}>more</Button></Typography>)
                   : <Typography sx={{display:"flex", marginTop:1, flexDirection:"column", justifyContent:"center"}}>{show.description}<Button sx={{fontSize: 12}}>more</Button></Typography>
               }                
               <fieldset className="w-full border p-1 rounded-md">
-                <legend className="font-semibold ml-3 px-2 text-orange-500 ">Genres</legend>                  
+                <legend className="font-semibold ml-3 px-2 text-[#ffc965] ">Genres</legend>                  
                 <section className="flex flex-col items-start justify-between">
                   { 
-                    show.genres.map((genre: number)=> <Typography sx={{fontSize: 12}}>{ Object.values(genreMap)[genre-1] }</Typography>)
+                    show.genres.map((genre: number, index)=> <Typography sx={{fontSize: 12}} key={index}>{ Object.values(genreMap)[genre-1] }</Typography>)
                   }
                 </section>                
               </fieldset>

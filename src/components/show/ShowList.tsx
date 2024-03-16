@@ -3,6 +3,10 @@ import { Show, useAppContext } from '../../context/AppContext';
 import ShowCard from './ShowCard';
 import { Box, Typography } from '@mui/material';
 
+const sectionTitles = [
+  "Top trending podcasts",
+  "Shows to try"
+]
 
 const ShowList = () => {
     const { shows, isLoading } = useAppContext()
@@ -10,11 +14,11 @@ const ShowList = () => {
     // const isLargeScreen = useMediaQuery(theme.breakpoints.up('sm'));
     // const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   return (
-    <Box sx={{width: "100%"}}>
+    <Box sx={{width: "100%", margin: "0 auto"}}>
       <Grid container spacing={2} columns={{ xs: 1, sm: 4, md: 12 }}>
         { 
           isLoading ? <Typography>Loading...</Typography> :shows.map((show: Show)=>(
-              <ShowCard {...show}/>
+              <ShowCard {...show} key={show.id}/>
           ))
         }        
       </Grid> 

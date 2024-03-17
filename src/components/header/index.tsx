@@ -3,6 +3,7 @@ import { MenuIcon } from "./MenuIcon"
 import { useAppContext } from "../../context/AppContext"
 import Logo from'../../assets/logo.png'
 import { Menu } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
@@ -93,20 +94,22 @@ const Header = (props: Props) => {
             alignItems:"center",  
             color: '#fff'
             }}>
-                <img
-                src={Logo}
-                width={50}
-                alt="Podcast Streamer"
-                loading="lazy"
-                />
+                <Link to="/" className="flex flex-col justify-center items-center">
+                  <img
+                  src={Logo}
+                  width={50}
+                  alt="Podcast Streamer"
+                  loading="lazy"
+                  />
 
-                <Typography
-                variant="h6"
-                component="div" 
-                sx={{}}           
-                >
-                    Podcast Streamer
-                </Typography>
+                  <Typography
+                  variant="h6"
+                  component="div" 
+                  sx={{}}           
+                  >
+                      Podcast Streamer
+                  </Typography>
+                </Link>
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"

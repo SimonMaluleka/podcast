@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, CssBaseline, Divider, Drawer, IconButton, Link, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from "@mui/material"
+import { AppBar, Box, Button, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from "@mui/material"
 import { MenuIcon } from "./MenuIcon"
 import { useAppContext } from "../../context/AppContext"
 import Logo from'../../assets/logo.png'
@@ -6,10 +6,6 @@ import Logo from'../../assets/logo.png'
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window?: () => Window;
 }
 

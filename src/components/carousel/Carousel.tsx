@@ -12,7 +12,7 @@ const Carousel = () => {
     const [currentPage, setCurrentPage ] = useState(0)
     const [cards, setCards] = useState<Show[]>([])
     const cardsPerPage = 4
-    const containerWidth = cardsPerPage * 450;
+    const containerWidth = cardsPerPage * 200;
     // const duplicateCards: React.ReactElement[] = Array.from(
     //     {length: 10},
     //     (_, index) => <img src={''} alt='' key={index}/>
@@ -45,7 +45,7 @@ const Carousel = () => {
     },[shows])
 
   return (
-    <Container sx={{my: 4, display: 'flex'}}>
+    <Container sx={{display: 'flex', mY:'4'}}>
       <IconButton
         onClick={handlePrevPage}
         sx={{ marginX: 5, display: { xs: 'none', sm: 'block' }}}
@@ -53,7 +53,7 @@ const Carousel = () => {
         disableRipple
       >
         {/* this is the button that will go to the previous page you can change these icons to whatever you wish*/}
-        <NavigateBeforeIcon />
+        <NavigateBeforeIcon sx={{color:'white'}} />
       </IconButton>    
       <Box sx={{ width: `${containerWidth}px`, margin: "auto" }}>
           {cards.map((_, index) => (
@@ -101,7 +101,7 @@ const Carousel = () => {
             currentPage >= Math.ceil((cards.length || 0) / cardsPerPage) - 1
           }
         >
-          <NavigateNextIcon />
+          <NavigateNextIcon sx={{color:'white'}}/>
         </IconButton>
       </Container>
   )

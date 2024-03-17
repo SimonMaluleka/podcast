@@ -1,35 +1,50 @@
-import React from 'react'
 import { Show, useAppContext } from '../context/AppContext'
-import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Card, CardContent, CardMedia, Container, Typography } from '@mui/material';
+import { useParams } from 'react-router-dom'
+import { Box, Card, CardContent, CardMedia, Chip, Container, Typography } from '@mui/material';
+import BackButton from '../components/show/showdetails/BackButton';
+import { Add } from '@mui/icons-material';
+import ShowMenuOptions from '../components/show/showdetails/ShowMenuOptions';
 
-const GoBack = () => {
-  const navigate = useNavigate();
-  const handleClick = () => navigate(-1);
 
-  return (
-    <Button 
-        variant='contained'
-        onClick={handleClick} 
-        sx={{fontSize:"18px", fontWeight:"bold", margin: 4}}>
-      &larr; Go Back
-    </Button>
-  );
-};
 
 const ShowDetailsPage = () => {
-    const { shows }= useAppContext()
-    const { id } = useParams()
-    
-    const show = shows.find((show: Show) => show.id === id)
-    console.log(show)
+  const { shows }= useAppContext()
+  const { id } = useParams()
+  
+  const show = shows.find((show: Show) => show.id === id)
+
   return (
-    <Container sx={{mt: 16}}>
-        <GoBack />
-        <Card variant="outlined" sx={{
+    <Container sx={{mt: 18}}>
+        <Box sx={{ 
+          display:'flex', 
+          alignItems:'center', 
+          justifyContent: 'space-between',
+          paddingY: '8px',
+          }}>
+          <BackButton />
+          <Box sx={{ 
+          display:'flex', 
+          gap: 2,
+          alignItems:'center', 
+          }} >
+            <Chip 
+            variant='filled' 
+            icon={<Add color='white' />} 
+            label={'Follow'} 
+            sx={{
+              color:"white", 
+              fontSize: '20px', 
+              fontWeight: "semi-bold", 
+              padding: 2,
+              backgroundColor:"#ffc965"
+              }}/>
+            <ShowMenuOptions />
+          </Box>
+        </Box>
+        <Card variant="elevation" sx={{
           display: "flex",
           flexDirection: "column",
-          height: "100%"
+          
           }}>
              <CardMedia
                 component="img"

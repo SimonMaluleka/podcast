@@ -1,11 +1,12 @@
 import { useEffect, useState} from 'react'
 import Slide from '@mui/material/Slide'
 import Stack  from '@mui/material/Stack'
-import { Show, useAppContext } from '../../context/AppContext'
+import { useAppContext } from '../../context/AppContext'
 import { Container, IconButton, Box } from '@mui/material'
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import CarouselShowPreview from './CarouselShowPreview'
+import { Show } from '../../helpers/types'
 
 const Carousel = () => {
     const { shows } = useAppContext()
@@ -95,7 +96,7 @@ const Carousel = () => {
           onClick={handleNextPage}
           sx={{
             marginX: 5,
-            display: { xs: 'none', sm: 'block' }
+            display: { xs: 'none', sm: 'block', }
           }}
           disabled={
             currentPage >= Math.ceil((cards.length || 0) / cardsPerPage) - 1

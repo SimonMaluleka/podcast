@@ -1,27 +1,7 @@
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
+import { AppContextProps, Show } from "../helpers/types";
 
 export const API_BASE_URL = "https://podcast-api.netlify.app"
-export type Show = {
-    id:          string;
-    title:       string;
-    description: string;
-    seasons:     number;
-    image:       string;
-    genres:      number[];
-    updated:     Date;
-}
-type AppContextProps ={
-    theme: boolean
-    setTheme: React.Dispatch<React.SetStateAction<boolean>>
-    shows: Show[]
-    setShows: React.Dispatch<React.SetStateAction<Show[]>>
-    // genres: string[]
-    // setGenres: React.Dispatch<React.SetStateAction<string[]>>
-    isLoading: boolean
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-    mobileMenuOpen: boolean; 
-    setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
 
 const AppContext = createContext<AppContextProps | null>(null)
 
@@ -36,9 +16,9 @@ const useAppContext = ()=>{
 const AppContextProvider = ({ children, initialShows }: {children: ReactNode, initialShows: Show[]})=>{
     const [theme, setTheme] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [isLoading, setIsLoading ] = useState(false)
+    const [isLoading, setIsLoading ] = useState(true)
     const [shows, setShows] = useState<Show[]>(initialShows)
-    // const [genres, setGenres] = useState<string[]>([])
+    // const [showDetails, setShowDetails] = useState<ShowDetails>()
     const abortControllerRef = useRef<AbortController | null>(null)
 
     useEffect(() => {

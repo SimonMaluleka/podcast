@@ -59,7 +59,7 @@ export default function SeasonsAccordions({seasons}: { seasons: Season[] | undef
     <>
       {
         seasons?.map((season: Season, index)=>(
-          <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
+          <Accordion expanded={expanded === `panel${index+1}`} onChange={handleChange(`panel${index}`)}>
             <AccordionSummary aria-controls={`panel${index}d-content`} id={`panel${index}d-header`}>
               <Typography variant='h5'><span className='text-semibold'>Season </span>{season?.season}</Typography>
             </AccordionSummary>

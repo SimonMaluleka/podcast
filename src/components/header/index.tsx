@@ -5,6 +5,7 @@ import { Menu } from "@mui/icons-material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RoutesEnum } from "../../routes";
 import { signOut } from "../../auth/supabase.service";
+import ProfileAvatar from "../profile/ProfileAvatar";
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
@@ -85,6 +86,7 @@ const Header = (props: Props) => {
   if (location.pathname === '/login') {
     return null; // Hide the component
   }
+
   return (
     <Box sx={{ display: 'flex', width:{sm: '100%'} }}>
       <CssBaseline />
@@ -134,13 +136,14 @@ const Header = (props: Props) => {
                 Login <span aria-hidden="true"> &rarr;</span>
               </span>
             </Button>:
-            <>
+            <Box sx={{display:'flex'}}>
              <Button variant="text" onClick={()=>navigate(RoutesEnum.Favorites)}>
               <span className="font-semibold text-white flex items-center">
                 Favorites
               </span>
               </Button>
-              <Button 
+              <ProfileAvatar />
+              {/* <Button 
                 variant="contained" 
                 sx={{backgroundColor: "#ffc965"}}
                 onClick={()=>{
@@ -153,8 +156,8 @@ const Header = (props: Props) => {
                 <span className="font-semibold text-white flex items-center">
                   Logout
                 </span>
-              </Button>
-            </>
+              </Button> */}
+            </Box>
             }
           </Box>
         </Toolbar>

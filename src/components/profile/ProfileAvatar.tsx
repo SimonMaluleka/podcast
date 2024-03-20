@@ -1,12 +1,26 @@
-import { Avatar } from '@mui/material'
-import React from 'react'
+import { Avatar, Box } from '@mui/material'
+import { ReactElement, useState } from 'react'
+import ContextMenu from '../ContextMenu'
+import { Logout } from '@mui/icons-material'
+const menuItems: {name: string, icon: ReactElement}[] = [
+  {name: 'Logout' , icon: <Logout /> },
+]
 
-const ProfileAvatar = (name: string) => {
+const ProfileAvatar = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const handleAvatarClick = (event: React.MouseEvent<HTMLElement>)=>{
+    setAnchorEl(event.currentTarget);
+  }
   return (
-    <Avatar 
+    <Box>
+      <Avatar 
         variant='circular'
-        alt={name}
-    />
+        onClick={handleAvatarClick}
+        alt={"profile image"}
+      />
+      <ContextMenu list={menuItems} htmlElement={anchorEl} setHtmlElementl={setAnchorEl} />
+    </Box>
+    
   )
 }
 

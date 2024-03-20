@@ -26,7 +26,7 @@ const ContextMenu = ({list, htmlElement, setHtmlElementl}: ContextMenuProps ) =>
           {
             list.map((item: ContextMenuItemsProps, index )=>
               <Box key={index}>
-                <MenuItem onClick={handleClose} sx={{display:"flex", justifyContent:"space-between"}}><Typography>{ item.name }</Typography>{item.icon}</MenuItem>
+                <MenuItem onClick={handleClose} sx={{display:"flex", justifyContent:"space-between", width: "120px"}}><Typography>{ item.name }</Typography>{item.icon}</MenuItem>
                 <Divider />
               </Box>
             )

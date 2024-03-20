@@ -1,3 +1,4 @@
+import { Card, CardMedia, CardContent, Typography, Chip, Button } from '@mui/material'
 import React from 'react'
 
 const FavoritesCard = () => {

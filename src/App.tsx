@@ -6,8 +6,9 @@ import FavoritesPage from './pages/FavoritesPage'
 import { RoutesEnum } from './routes'
 import LoginPage from './pages/auth/login'
 import RegisterPage from './pages/auth/register'
+import ResetPasswordPage from './pages/auth/forgotPassword/ResetPasswordPage'
 
-function App() {  
+function App() {   
   return (
       <BrowserRouter>
         <Header />
@@ -15,8 +16,9 @@ function App() {
           <Route path={RoutesEnum.Home} element={<Home />} />
           <Route path={RoutesEnum.ShowDetails} element={<ShowDetailsPage />}/>     
           <Route path={RoutesEnum.Favorites} element={<FavoritesPage />}/>     
-          <Route path={RoutesEnum.Login} element={<LoginPage />}/>     
+          <Route path={RoutesEnum.Login} element={<LoginPage />} />     
           <Route path={RoutesEnum.Register} element={<RegisterPage />}/>     
+          <Route path={RoutesEnum.ResetPassword} element={<ResetPasswordPage />}/>     
         </Routes>
       </BrowserRouter>      
   )

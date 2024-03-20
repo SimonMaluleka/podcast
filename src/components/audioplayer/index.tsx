@@ -91,6 +91,7 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
           controls={true}
           preload="true"
           hidden={true}
+          
         >
           <source src={src} />
         </audio>

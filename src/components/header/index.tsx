@@ -1,9 +1,10 @@
 import { AppBar, Box, Button, CssBaseline, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from "@mui/material"
-import { MenuIcon } from "./MenuIcon"
 import { useAppContext } from "../../context/AppContext"
 import Logo from'../../assets/logo.png'
 import { Menu } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { RoutesEnum } from "../../routes";
+import { signOut } from "../../auth/supabase.service";
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
@@ -16,8 +17,9 @@ interface Props {
 }
 
 const Header = (props: Props) => {
-  const { mobileMenuOpen, setMobileMenuOpen } = useAppContext()
+  const { mobileMenuOpen, setMobileMenuOpen, token, setToken } = useAppContext()
   const { window } = props
+  const location = useLocation();
   const handleDrawerToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
@@ -78,7 +80,11 @@ const Header = (props: Props) => {
         </Box>
     </Box>)
   const container = window !== undefined ? () => window().document.body : undefined;
-  
+  const navigate = useNavigate()
+
+  if (location.pathname === '/login') {
+    return null; // Hide the component
+  }
   return (
     <Box sx={{ display: 'flex', width:{sm: '100%'} }}>
       <CssBaseline />
@@ -94,7 +100,7 @@ const Header = (props: Props) => {
             alignItems:"center",  
             color: '#fff'
             }}>
-                <Link to="/" className="flex flex-col justify-center items-center">
+                <Link to={RoutesEnum.Home} className="flex flex-col justify-center items-center">
                   <img
                   src={Logo}
                   width={50}
@@ -123,11 +129,33 @@ const Header = (props: Props) => {
           </Box>
           
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            <Button variant="text">
+            { token == null ? <Button variant="text" onClick={()=>navigate(RoutesEnum.Login)}>
               <span className="font-semibold text-white">
                 Login <span aria-hidden="true"> &rarr;</span>
               </span>
-            </Button>
+            </Button>:
+            <>
+             <Button variant="text" onClick={()=>navigate(RoutesEnum.Favorites)}>
+              <span className="font-semibold text-white flex items-center">
+                Favorites
+              </span>
+              </Button>
+              <Button 
+                variant="contained" 
+                sx={{backgroundColor: "#ffc965"}}
+                onClick={()=>{
+                  signOut()
+                  setToken(null)
+                  sessionStorage.removeItem("token")
+                  navigate(RoutesEnum.Home)
+                }
+              }>
+                <span className="font-semibold text-white flex items-center">
+                  Logout
+                </span>
+              </Button>
+            </>
+            }
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,5 +1,4 @@
 import { Box } from '@mui/material'
-import React from 'react'
 import ContinueWithAuthProvider from '../../../modules/common/ContinueWithProvider'
 import LoginForm from '../../../modules/login/LoginForm'
 import LogoSection from '../../../modules/login/LogoSection'

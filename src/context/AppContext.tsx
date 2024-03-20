@@ -1,5 +1,7 @@
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
 import { AppContextProps, Show } from "../helpers/types";
+import { Session } from "@supabase/supabase-js";
+import { supabase } from "../auth/supabase.service";
 
 export const API_BASE_URL = "https://podcast-api.netlify.app"
 
@@ -15,14 +17,27 @@ const useAppContext = ()=>{
 
 const AppContextProvider = ({ children, initialShows }: {children: ReactNode, initialShows: Show[]})=>{
     const [theme, setTheme] = useState(false)
+    const [token, setToken] = useState<Session | null>(null)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [isLoading, setIsLoading ] = useState(true)
     const [shows, setShows] = useState<Show[]>(initialShows)
-    // const [showDetails, setShowDetails] = useState<ShowDetails>()
     const abortControllerRef = useRef<AbortController | null>(null)
+    // const getUserProfile = async()=>{
+    //     const { data, error} = await supabase.from('profiles').select('avatar_url').eq('id', user.value.id).single()
+    // }
+    if(token){
+        sessionStorage.setItem('token', JSON.stringify(token) )
+
+    }
 
     useEffect(() => {
-      const fetchShows = async() => {
+        if(sessionStorage.getItem('token')){
+            const data = JSON.parse(sessionStorage.getItem('token')!)
+            
+            setToken(data)
+        }
+        
+        const fetchShows = async() => {
             abortControllerRef.current?.abort()
             abortControllerRef.current = new AbortController()
 
@@ -44,7 +59,7 @@ const AppContextProvider = ({ children, initialShows }: {children: ReactNode, in
     }, [])
     
     return (
-        <AppContext.Provider value={{shows, setShows, theme, setTheme, isLoading, setIsLoading, mobileMenuOpen, setMobileMenuOpen}}>
+        <AppContext.Provider value={{shows, setShows, token, setToken, theme, setTheme, isLoading, setIsLoading, mobileMenuOpen, setMobileMenuOpen}}>
             {children}
         </AppContext.Provider>
     )

@@ -8,8 +8,9 @@ import {
 } from "@supabase/supabase-js";
 
 export const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY
+  "https://qokahabbrbiqsdqmrqdw.supabase.co", //import.meta.env.VITE_SUPABASE_URL,
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFva2FoYWJicmJpcXNkcW1ycWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAzOTEzMTIsImV4cCI6MjAyNTk2NzMxMn0.CTqMzyskDYhxRz7qnynVmI_yPBo64ZR-5wF_iYjHxQ0"
+  //import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY
 );
 
 export const client = SupabaseClient;
@@ -26,14 +27,21 @@ export const getSession = async () => {
 };
 
 export const signin = async (email: string, password: string) => {
-  return await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+    return data.session;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export const sigOut = async () => {
-  return await supabase.auth.signOut();
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) console.log(error);
 };
 
 export const updateProfile = async () => {

@@ -1,3 +1,4 @@
+import { Session } from "@supabase/supabase-js";
 import { ReactElement, ReactNode } from "react";
 export type ContextMenuItemsProps = {
   name: string;
@@ -38,6 +39,8 @@ export type ShowDetails = {
   updated: Date;
 };
 export type AppContextProps = {
+  token: Session | null;
+  setToken: React.Dispatch<React.SetStateAction<Session | null>>;
   theme: boolean;
   setTheme: React.Dispatch<React.SetStateAction<boolean>>;
   shows: Show[];

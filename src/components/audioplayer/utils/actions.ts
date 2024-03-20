@@ -75,3 +75,9 @@ export const getPlayerStateFromAction = (
 
   return newState;
 };
+
+// classes={{
+//                       root: css(classes["player-slider-container"], slider),
+//                       track: css(classes["player-slider-track"], track),
+//                       thumb: css(classes["player-slider-thumb"], thumb)
+//                     }}

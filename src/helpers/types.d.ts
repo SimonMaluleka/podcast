@@ -76,3 +76,10 @@ export type AudioPlayerProps = {
   classNames?: ClassnameTypes;
   autoPlay?: boolean;
 };
+
+export type Profile = {
+  id?: string;
+  username: string;
+  website: string;
+  avatarUrl: string;
+};

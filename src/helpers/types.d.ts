@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 export type ContextMenuItemsProps = {
   name: string;
   icon?: ReactElement;
@@ -82,4 +82,8 @@ export type Profile = {
   username: string;
   website: string;
   avatarUrl: string;
+};
+
+export type ChildrenProps = {
+  children: ReactNode;
 };

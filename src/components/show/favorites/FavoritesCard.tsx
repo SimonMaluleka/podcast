@@ -1,28 +1,8 @@
-import Grid from '@mui/material/Unstable_Grid2';
-import { Button, Card, CardContent, CardMedia, Chip, Typography } from '@mui/material';
-import { Show } from '../../helpers/types';
-import { useNavigate } from 'react-router-dom';
+import React from 'react'
 
-const ShowCard = (show: Show) => { 
-  const navigate = useNavigate()
-  const genreMap = {
-    "1": "Personal Growth",
-    "2":	"True Crime and Investigative Journalism",
-    "3":	"History",
-    "4":	"Comedy",
-    "5":	"Entertainment",
-    "6":	"Business",
-    "7":	"Fiction",
-    "8":	"News",
-    "9":	"Kids and Family"
-  }
-
+const FavoritesCard = () => {
   return (
-    <Grid xs={4} key={show.id}>
-        <Card 
-          variant="outlined" 
-          onClick={()=>navigate(`/${show.id}`)}
-          sx={{
+    <Card variant="outlined" sx={{
           display: "flex",
           flexDirection: "column",
           height: "100%"
@@ -54,8 +34,7 @@ const ShowCard = (show: Show) => {
               <Typography sx={{fontSize: 12, marginTop: 2, }}>Last updated: { new Date(show.updated).getDay()+"-"+new Date(show.updated).getMonth()+"-"+new Date(show.updated).getFullYear() }</Typography>
             </CardContent>                     
         </Card>
-    </Grid>
   )
 }
 
-export default ShowCard
+export default Favorites

@@ -9,10 +9,7 @@ const Filter = () => {
         setAnchorEl(event.currentTarget);
     };
     const menuItems: ContextMenuItemsProps[] = [
-        {name:"Title alphabetically, A-Z"},
-        {name:"Title alphabetically, Z-A"},
-        {name:"Last update, Ascending"},
-        {name:"Last update, Descending"},
+        {name:"Title or Genre", icon:<input placeholder="Search Shows" className='m-2 border rounded-sm p-2' />}
     ]
   return (
     <>

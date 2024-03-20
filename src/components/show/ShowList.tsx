@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Unstable_Grid2';
-import { Show, useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppContext';
 import ShowCard from './ShowCard';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
@@ -10,8 +10,8 @@ const sectionTitles = [
 ]
 
 const ShowList = () => {
-    const { shows, } = useAppContext()
-    const [isLoading, setIsLoading ] = useState(true)
+    const { shows, isLoading } = useAppContext()
+
     // const [sort, setSort] = useState<string>('')
 
     "By Title, A-Z"
@@ -30,12 +30,14 @@ const ShowList = () => {
       <Grid container spacing={2} columns={{ xs: 1, sm: 4, md: 12 }}>
         { 
           isLoading ? <Typography>Loading...</Typography> :
-          shows.sort((a, b) => {
-            if(sort === "By Title, A-Z"){
-              return a.title - b.title
-            }
+          shows.
+          // sort((a, b) => {
+          //   if(sort === "By Title, A-Z"){
+          //     return a.title - b.title
+          //   }
 
-          }).map((show: Show)=>(
+          // }).
+          map((show: Show)=>(
               <ShowCard {...show} key={show.id}/>
           ))
         }        

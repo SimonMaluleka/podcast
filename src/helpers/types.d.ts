@@ -55,3 +55,24 @@ export type ContextMenuProps = {
   htmlElement: HTMLElement | null;
   setHtmlElementl: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 };
+
+export type ClassnameTypes = {
+  player?: string;
+  loopIcon?: string;
+  playIcon?: string;
+  muteIcon?: string;
+  slider?: string;
+  track?: string;
+  thumb?: string;
+  text?: string;
+};
+
+export type AudioPlayerProps = {
+  src: string;
+  width?: string;
+  height?: string;
+  rounded?: boolean;
+  classes?: Record<string, string>;
+  classNames?: ClassnameTypes;
+  autoPlay?: boolean;
+};

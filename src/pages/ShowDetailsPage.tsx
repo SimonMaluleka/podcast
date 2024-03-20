@@ -57,7 +57,7 @@ const ShowDetailsPage = () => {
           }} >
             <Chip 
             variant='filled' 
-            icon={<Add sx={{color:'white'}} />} 
+            icon={<Add style={{color:"white"}} />} 
             label={'Follow'} 
             sx={{
               color:"white", 
@@ -91,6 +91,10 @@ const ShowDetailsPage = () => {
                 {showDetails?.description}
               </Typography>
               <Button 
+                onClick={()=>{
+                  const latestEpisode = showDetails?.seasons.slice(-1)[0].episodes.slice(-1)[0]
+                  console.log(latestEpisode)
+                }}
                 variant='contained'
                 startIcon={<PlayArrow />}
                 sx={{background: "#ffc965", margin:"8px"}}

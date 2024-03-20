@@ -8,6 +8,8 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { Episode, Season } from '../../../helpers/types';
+import AudioPlayerFunctional from '../../audioplayer';
+import { Card, CardContent, CardHeader, Container} from '@mui/material';
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -59,11 +61,21 @@ export default function SeasonsAccordions({seasons}: { seasons: Season[] | undef
         seasons?.map((season: Season, index)=>(
           <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
             <AccordionSummary aria-controls={`panel${index}d-content`} id={`panel${index}d-header`}>
-              <Typography variant='h5'><span className='text-semibold'>Season </span>{season?.season + " - " + season?.title}</Typography>
+              <Typography variant='h5'><span className='text-semibold'>Season </span>{season?.season}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              { season.episodes.map((episode: Episode)=>(
-                 <p>{episode.title}</p>
+              { season.episodes.map((episode: Episode)=>(                
+                <Card>
+                  <CardHeader title={"Episode " +episode.episode + " ("+episode.title+")"}/>
+                  <CardContent>
+                    <Typography variant='body1'>{episode.description}</Typography>
+                    <Container sx={{mt:4, padding: 1, background:"#ffc965"}}>
+                      <AudioPlayerFunctional src={episode.file} />
+                    </Container>
+                  </CardContent>
+                  
+                </Card>// 
+                 
               ))}
             </AccordionDetails>
           </Accordion>

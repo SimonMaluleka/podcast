@@ -1,6 +1,5 @@
 import Player  from './utils/constants'
 import React, { useState, useEffect, useRef } from 'react';
-// import PropTypes from 'prop-types'; // Import PropTypes if needed
 import { AudioPlayerProps } from '../../helpers/types';
 import { attachToEvent, getCurrentTime, getFormattedTime, getIconByPlayerStatus, getPlayerStateFromAction, getProgress, removeFromEvent } from './utils';
 import { Loop, VolumeMute } from '@mui/icons-material';
@@ -25,9 +24,13 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
     const triggerAction = (action: string) => {      
       const newState = getPlayerStateFromAction(playerRef.current!, action);
       console.log(newState)
-      // if (newState) {
-        
-      // }
+      switch(newState){
+        case {loopStatus: 'loop'}: setLoopStatus(Player.Status.LOOP);
+        break;
+        case {muteStatus: 'mute'}: setMuteStatus(Player.Status.MUTE);
+        break;
+        default: setPlayStatus(Player.Status.PLAY)
+      }
     };
 
   const handleTimeUpdate = (player: HTMLAudioElement) => {
@@ -37,7 +40,6 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
   
   const handleCanPlay = (player: HTMLAudioElement) => {
     attachToEvent(player, Player.Events.TIME_UPDATE, handleTimeUpdate);
-
     setDuration(player.duration);
   };
 
@@ -57,14 +59,14 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
     
 
     useEffect(() => {
-    handleCanPlay(playerRef.current!)
-    if (playerRef.current) {
-        attachToEvent(playerRef.current, Player.Events.CAN_PLAY, handleCanPlay )
-    //   playerRef.current.addEventListener(Player.Events.CAN_PLAY, handleCanPlay);
-      if (autoPlay) {
-        playerRef.current.play
-        
-      }
+      // handleCanPlay(playerRef.current!)
+      if (playerRef.current) {
+          attachToEvent(playerRef.current, Player.Events.CAN_PLAY, handleCanPlay )
+      //   playerRef.current.addEventListener(Player.Events.CAN_PLAY, handleCanPlay);
+        if (autoPlay) {
+          playerRef.current.play
+          
+        }
 
       return () => {
         if(playerRef.current){
@@ -91,7 +93,6 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
           controls={true}
           preload="true"
           hidden={true}
-          
         >
           <source src={src} />
         </audio>

@@ -1,9 +1,10 @@
 import { Avatar, Box } from '@mui/material'
 import { ReactElement, useState } from 'react'
 import ContextMenu from '../ContextMenu'
-import { Logout } from '@mui/icons-material'
+import { Logout, Settings } from '@mui/icons-material'
 const menuItems: {name: string, icon: ReactElement}[] = [
-  {name: 'Logout' , icon: <Logout /> },
+   {name: 'Settings' , icon: <Settings />},
+   {name: 'Logout' , icon: <Logout /> },
 ]
 
 const ProfileAvatar = () => {

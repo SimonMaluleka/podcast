@@ -1,8 +1,8 @@
 import { Container } from '@mui/material'
-import React from 'react'
+import { ChildrenProps } from '../helpers/types'
 
 export const PageLayout = ({ children }: ChildrenProps) => {
   return (
-    <Container>{ children }</Container>
+    <Container sx={{}}>{ children }</Container>
   )
 }

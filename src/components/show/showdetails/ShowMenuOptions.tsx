@@ -36,7 +36,7 @@ const ShowMenuOptions = () => {
             fontSize:"30px"}}
           >...</Typography>
         </IconButton>
-        <ContextMenu list={menuItems} htmlElement={anchorEl} setHtmlElementl={setAnchorEl} />
+        <ContextMenu list={menuItems} htmlElement={anchorEl} setHtmlElementl={setAnchorEl}/>
     </>
   )
 }

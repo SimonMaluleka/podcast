@@ -1,5 +1,6 @@
 import { Session } from "@supabase/supabase-js";
 import { ReactElement, ReactNode } from "react";
+import { z } from "zod";
 export type ContextMenuItemsProps = {
   name: string;
   icon?: ReactElement;
@@ -38,6 +39,13 @@ export type ShowDetails = {
   genres: string[];
   updated: Date;
 };
+
+const schema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+export type FormFields = z.infer<typeof schema>;
+
 export type AppContextProps = {
   token: Session | null;
   setToken: React.Dispatch<React.SetStateAction<Session | null>>;
@@ -54,6 +62,7 @@ export type AppContextProps = {
 };
 
 export type ContextMenuProps = {
+  showDetails?: ShowDetails;
   list: ContextMenuItemsProps[];
   htmlElement: HTMLElement | null;
   setHtmlElementl: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
@@ -70,6 +79,9 @@ export type ClassnameTypes = {
   text?: string;
 };
 
+export type AudioPlayerRefProps = {
+  playerRef: HTMLAudioElement | null;
+};
 export type AudioPlayerProps = {
   src: string;
   width?: string;

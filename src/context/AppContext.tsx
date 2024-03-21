@@ -1,7 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
-import { AppContextProps, Show } from "../helpers/types";
+import { AppContextProps,  Show } from "../helpers/types";
 import { Session } from "@supabase/supabase-js";
-import { supabase } from "../auth/supabase.service";
 
 export const API_BASE_URL = "https://podcast-api.netlify.app"
 

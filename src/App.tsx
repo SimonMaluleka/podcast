@@ -7,6 +7,7 @@ import { RoutesEnum } from './routes'
 import LoginPage from './pages/auth/login'
 import RegisterPage from './pages/auth/register'
 import ResetPasswordPage from './pages/auth/forgotPassword/ResetPasswordPage'
+import SettingsPage from './pages/SettingsPage'
 
 function App() {   
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path={RoutesEnum.Favorites} element={<FavoritesPage />}/>     
           <Route path={RoutesEnum.Login} element={<LoginPage />} />     
           <Route path={RoutesEnum.Register} element={<RegisterPage />}/>     
+          <Route path={RoutesEnum.Settings} element={<SettingsPage />}/>     
           <Route path={RoutesEnum.ResetPassword} element={<ResetPasswordPage />}/>     
         </Routes>
       </BrowserRouter>      

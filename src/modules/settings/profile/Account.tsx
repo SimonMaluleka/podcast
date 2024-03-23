@@ -1,6 +1,6 @@
 import { ArrowRight } from '@mui/icons-material'
-import { Avatar, Box, Container, Divider, TextField, Typography } from '@mui/material'
-import React from 'react'
+import { Avatar, Box, Container, TextField, Typography } from '@mui/material'
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 const Account = () => {
   return (
@@ -12,21 +12,21 @@ const Account = () => {
           <Typography variant='body2'>Name</Typography>
           <TextField value={'Simon Maluleka'}></TextField>
         </Box>
-        <ArrowRight />
+        <NavigateNextIcon />
       </Box>
       <Box sx={{display:'flex', alignItems:'center'}}>
         <Box>
           <Typography variant='body2'>Phone number</Typography>
           <TextField value={'+27070000000'}></TextField>
         </Box>
-        <ArrowRight />
+        <NavigateNextIcon />
       </Box>
       <Box sx={{display:'flex', alignItems:'center'}}>
         <Box>
           <Typography variant='body2'>Email</Typography>
           <TextField value={'username@podcast-streamer.com'}></TextField>
         </Box>
-        <ArrowRight />
+        <NavigateNextIcon />
       </Box>
     </Container>
   )

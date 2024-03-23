@@ -1,15 +1,8 @@
-import { Box, Container } from '@mui/material'
+import { PageLayout } from '../modules/settings/PageLayout'
 
 const SettingsPage = () => {
   return (
-    <Container sx={{mt:'180px', display:'flex'}}>
-        <Box sx={{width:"30%"}}>
-            settings leftside
-        </Box>
-        <Box sx={{width:"70%"}}>
-            settings main
-        </Box>
-    </Container>
+    <PageLayout />
   )
 }
 

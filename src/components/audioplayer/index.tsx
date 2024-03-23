@@ -27,7 +27,7 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
       switch(newState){
         case {loopStatus: 'loop'}: setLoopStatus(Player.Status.LOOP);
         break;
-        case {muteStatus: 'mute'}: setMuteStatus(Player.Status.MUTE);
+        case {muteStatus: 'mute'}: setMuteStatus(Player.Status.UNMUTE);
         break;
         default: setPlayStatus(Player.Status.PLAY)
       }

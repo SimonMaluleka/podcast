@@ -20,6 +20,7 @@ const AppContextProvider = ({ children, initialShows }: {children: ReactNode, in
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [isLoading, setIsLoading ] = useState(true)
     const [shows, setShows] = useState<Show[]>(initialShows)
+    const [subscriptions, setSubscriptions] = useState<Show[]>([])
     const abortControllerRef = useRef<AbortController | null>(null)
     // const getUserProfile = async()=>{
     //     const { data, error} = await supabase.from('profiles').select('avatar_url').eq('id', user.value.id).single()
@@ -58,7 +59,7 @@ const AppContextProvider = ({ children, initialShows }: {children: ReactNode, in
     }, [])
     
     return (
-        <AppContext.Provider value={{shows, setShows, token, setToken, theme, setTheme, isLoading, setIsLoading, mobileMenuOpen, setMobileMenuOpen}}>
+        <AppContext.Provider value={{shows, setShows, subscriptions, setSubscriptions,token, setToken, theme, setTheme, isLoading, setIsLoading, mobileMenuOpen, setMobileMenuOpen}}>
             {children}
         </AppContext.Provider>
     )

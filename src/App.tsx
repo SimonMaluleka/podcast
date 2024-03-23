@@ -8,6 +8,9 @@ import LoginPage from './pages/auth/login'
 import RegisterPage from './pages/auth/register'
 import ResetPasswordPage from './pages/auth/forgotPassword/ResetPasswordPage'
 import SettingsPage from './pages/SettingsPage'
+import Account from './modules/settings/profile/Account'
+import Notifications from './modules/settings/notifications/Notifications'
+import Subscriptions from './modules/settings/subscriptions/Subscriptions'
 
 function App() {   
   return (
@@ -19,7 +22,11 @@ function App() {
           <Route path={RoutesEnum.Favorites} element={<FavoritesPage />}/>     
           <Route path={RoutesEnum.Login} element={<LoginPage />} />     
           <Route path={RoutesEnum.Register} element={<RegisterPage />}/>     
-          <Route path={RoutesEnum.Settings} element={<SettingsPage />}/>     
+          <Route path={RoutesEnum.Settings} element={<SettingsPage />}>            
+            <Route index element={<Account />} />
+            <Route path={RoutesEnum.Subscriptions} element={<Subscriptions />} />
+            <Route path={RoutesEnum.Notifications} element={<Notifications />} />
+          </Route>     
           <Route path={RoutesEnum.ResetPassword} element={<ResetPasswordPage />}/>     
         </Routes>
       </BrowserRouter>      

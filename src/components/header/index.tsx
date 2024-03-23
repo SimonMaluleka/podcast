@@ -4,7 +4,6 @@ import Logo from'../../assets/logo.png'
 import { Menu } from "@mui/icons-material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RoutesEnum } from "../../routes";
-import { signOut } from "../../auth/supabase.service";
 import ProfileAvatar from "../profile/ProfileAvatar";
 
 const drawerWidth = 240;
@@ -18,7 +17,7 @@ interface Props {
 }
 
 const Header = (props: Props) => {
-  const { mobileMenuOpen, setMobileMenuOpen, token, setToken } = useAppContext()
+  const { mobileMenuOpen, setMobileMenuOpen, token } = useAppContext()
   const { window } = props
   const location = useLocation();
   const handleDrawerToggle = () => {

@@ -47,6 +47,8 @@ const schema = z.object({
 export type FormFields = z.infer<typeof schema>;
 
 export type AppContextProps = {
+  subscriptions: ShowDetails[];
+  setSubscriptions: React.Dispatch<React.SetStateAction<ShowDetails[]>>;
   token: Session | null;
   setToken: React.Dispatch<React.SetStateAction<Session | null>>;
   theme: boolean;

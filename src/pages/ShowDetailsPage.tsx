@@ -1,6 +1,6 @@
-import { API_BASE_URL } from '../context/AppContext'
+import { API_BASE_URL, useAppContext } from '../context/AppContext'
 import { useParams } from 'react-router-dom'
-import { Box, Button, Card, CardContent, CardMedia, Chip, Container, Divider, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Container, Divider, IconButton, Typography } from '@mui/material';
 import BackButton from '../components/show/showdetails/BackButton';
 import { Add, PlayArrow } from '@mui/icons-material';
 import ShowMenuOptions from '../components/show/showdetails/ShowMenuOptions';
@@ -11,10 +11,15 @@ import SeasonsAccordions from '../components/show/showdetails/SeasonsAccordions'
 
 
 const ShowDetailsPage = () => {
+  const { subscriptions, setSubscriptions } = useAppContext()
   const { id } = useParams()
   const abortControllerRef = useRef<AbortController | null>(null)
   const [showDetails, setShowDetails ] = useState<ShowDetails>()
 
+  const handleAddSubscription = (show: ShowDetails)=> {
+    setSubscriptions([...subscriptions, show])
+    console.log(subscriptions)
+  }
   const fetchShowDetails = async(id: string) => {
             abortControllerRef.current?.abort()
             abortControllerRef.current = new AbortController()
@@ -55,17 +60,18 @@ const ShowDetailsPage = () => {
           gap: 2,
           alignItems:'center', 
           }} >
-            <Chip 
-            variant='filled' 
-            icon={<Add style={{color:"white"}} />} 
-            label={'Follow'} 
-            sx={{
-              color:"white", 
-              fontSize: '20px', 
-              fontWeight: "semi-bold", 
-              padding: 2,
-              backgroundColor:"#ffc965"
-              }}/>
+            <Button 
+              onClick={() => handleAddSubscription(showDetails!)}
+              variant='contained'  
+              sx={{
+                color:"white", 
+                fontSize: '20px', 
+                fontWeight: "semi-bold", 
+                padding: 2,
+                backgroundColor:"#ffc965"
+                }}>
+                  + Follow
+                </Button>
             <ShowMenuOptions />
           </Box>
         </Box>

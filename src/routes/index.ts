@@ -6,4 +6,7 @@ export enum RoutesEnum {
   Favorites = "/favorites",
   Settings = "/settings",
   ResetPassword = "/resetpassword",
+  Account = "account",
+  Subscriptions = "subscriptions",
+  Notifications = "notifications",
 }

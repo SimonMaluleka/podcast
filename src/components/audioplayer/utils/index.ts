@@ -1,5 +1,4 @@
 import { Pause, PlayArrow } from "@mui/icons-material";
-import Player from "./constants";
 
 export * from "./actions";
 export * from "./events";
@@ -16,13 +15,12 @@ export const getFormattedTime = (time: number) => {
   return `${dateTimeM}:${dateTimeS}`;
 };
 
-export const getIconByPlayerStatus = (playerStatus: string) => {
+export const getIconByPlayerStatus = (playerStatus: boolean) => {
   switch (playerStatus) {
-    case Player.Status.PAUSE:
-      return PlayArrow;
-    case Player.Status.PLAY:
-    default:
+    case true:
       return Pause;
+    default:
+      return PlayArrow;
   }
 };
 

@@ -8,8 +8,9 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { Episode, Season } from '../../../helpers/types';
-import AudioPlayerFunctional from '../../audioplayer';
-import { Box, Card, CardContent, CardHeader, Chip, Container} from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Chip, Container} from '@mui/material';
+import { PlayArrow } from '@mui/icons-material';
+import { useAppContext } from '../../../context/AppContext';
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -47,11 +48,11 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-export default function SeasonsAccordions({seasons}: { seasons: Season[] | undefined}) {
+export default function SeasonsAccordions({seasons }: { seasons: Season[] | undefined }) {
   const [expanded, setExpanded] = React.useState<string | false>('panel1');
-
+  const { setEpisodeFile } = useAppContext()
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+    (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
 
@@ -59,18 +60,25 @@ export default function SeasonsAccordions({seasons}: { seasons: Season[] | undef
     <>
       {
         seasons?.map((season: Season, index)=>(
-          <Accordion expanded={expanded === `panel${index+1}`} onChange={handleChange(`panel${index}`)}>
+          <Accordion key={index} expanded={expanded === `panel${index+1}`} onChange={handleChange(`panel${index}`)}>
             <AccordionSummary aria-controls={`panel${index}d-content`} id={`panel${index}d-header`}>
               <Typography variant='h5'><span className='text-semibold'>Season </span>{season?.season}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              { season.episodes.map((episode: Episode)=>(                
-                <Card>
+              { season.episodes.map((episode: Episode, index)=>(                
+                <Card key={index}>
                   <CardHeader title={<Box sx={{display:'flex', alignItems:'center', gap: 2}}><Chip label={`Episode ${episode.episode}`} sx={{background: "#ffc965", color:"white"}}/><Typography variant='h6'>{episode.title}</Typography></Box> }/>
                   <CardContent>
                     <Typography variant='body1'>{episode.description}</Typography>
                     <Container sx={{mt:4, padding: 1, background:"#ffc965"}}>
-                      <AudioPlayerFunctional src={episode.file} />
+                      <Button
+                        onClick={()=> { 
+                          setEpisodeFile(episode.file)
+                          // setIsPlaying(true)
+                          console.log("file set")
+                        }}
+                      ><PlayArrow /> Listen</Button>
+                      {/* <AudioPlayerFunctional src={episode.file} /> */}
                     </Container>
                   </CardContent>
                   

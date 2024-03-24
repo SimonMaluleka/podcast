@@ -1,50 +1,66 @@
-import Player  from './utils/constants'
 import React, { useState, useEffect, useRef } from 'react';
 import { AudioPlayerProps } from '../../helpers/types';
-import { attachToEvent, getCurrentTime, getFormattedTime, getIconByPlayerStatus, getPlayerStateFromAction, getProgress, removeFromEvent } from './utils';
+import { getCurrentTime, getFormattedTime, getIconByPlayerStatus } from './utils';
 import { Loop, VolumeMute } from '@mui/icons-material';
-import { Paper, Grid, Typography, Slider } from '@mui/material';
+import { Paper, Grid, Typography, Slider, Container } from '@mui/material';
+import { useAppContext } from '../../context/AppContext';
 
 
 const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
-  src,
   width,
   height,
   rounded,
   autoPlay,
+  top,
+  right,
+  left,
+  bottom 
 }: AudioPlayerProps) => {
+    const [duration, setDuration] = useState(0)
+    const [current, setCurrent] = useState(0)
+    const [progress, setProgress] = useState(0)
+    const { episodeFile, 
+            isPlaying,
+            setIsPlaying, 
+            isLooping, 
+            setIsLooping, 
+            isMuted, 
+            setIsMuted 
+          } = useAppContext()
     const playerRef = useRef<HTMLAudioElement | null>(null);
-    const [current, setCurrent] = useState(0);
-    const [progress, setProgress] = useState<number>(0);
-    const [duration, setDuration] = useState(0);
-    const [loopStatus, setLoopStatus] = useState(Player.Status.UNLOOP); // Replace with actual type
-    const [playStatus, setPlayStatus] = useState(Player.Status.PAUSE); // Replace with actual type
-    const [muteStatus, setMuteStatus] = useState(Player.Status.UNMUTE); // Replace with actual type
 
-    const triggerAction = (action: string) => {      
-      const newState = getPlayerStateFromAction(playerRef.current!, action);
-      console.log(newState)
-      switch(newState){
-        case {loopStatus: 'loop'}: setLoopStatus(Player.Status.LOOP);
-        break;
-        case {muteStatus: 'mute'}: setMuteStatus(Player.Status.UNMUTE);
-        break;
-        default: setPlayStatus(Player.Status.PLAY)
+  const togglePlayPause = () => {
+    if (playerRef.current) {
+      if (isPlaying) {
+        playerRef.current.pause();
+      } else {
+        playerRef.current.play();
       }
-    };
-
-  const handleTimeUpdate = (player: HTMLAudioElement) => {
-    setCurrent(player.currentTime)
-    setProgress(getProgress(player.currentTime, player.duration))
-  };
-  
-  const handleCanPlay = (player: HTMLAudioElement) => {
-    attachToEvent(player, Player.Events.TIME_UPDATE, handleTimeUpdate);
-    setDuration(player.duration);
+      setIsPlaying(!isPlaying);
+    }
   };
 
- 
+   const togglePlayLoop = () => {
+    if (playerRef.current) {
+      if (isLooping) {
+        playerRef.current.loop = true
+      } else {
+        playerRef.current.loop = false
+      }
+      setIsLooping(!isLooping);
+    }
+  };
 
+  const togglePlayMute = () => {
+    if (playerRef.current) {
+      if (isMuted) {
+        playerRef.current.muted = false;
+      } else {
+        playerRef.current.muted = true;
+      }
+      setIsMuted(!isMuted);
+    }
+  };
   const handleChange = (progress: number | number[], player: HTMLAudioElement) => {
     if (player) {
       const currentTime = getCurrentTime(progress as number, player.duration);
@@ -56,46 +72,43 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
       setProgress(currentTime);
     }
   };
-    
-
-    useEffect(() => {
-      // handleCanPlay(playerRef.current!)
-      if (playerRef.current) {
-          attachToEvent(playerRef.current, Player.Events.CAN_PLAY, handleCanPlay )
-      //   playerRef.current.addEventListener(Player.Events.CAN_PLAY, handleCanPlay);
-        if (autoPlay) {
-          playerRef.current.play
-          
-        }
-
-      return () => {
-        if(playerRef.current){
-            removeFromEvent(playerRef.current, Player.Events.CAN_PLAY, handleCanPlay)
-        }
-        
-        // playerRef.current.removeEventListener(
-        //   Player.Events.CAN_PLAY,
-        //   handleCanPlay
-        // );
-      };
+  
+  useEffect(() => {
+    // handleCanPlay(playerRef.current!)
+    if (playerRef.current) {
+      if (autoPlay) {
+        playerRef.current.play        
+      }
     }
-  }, [autoPlay]);
+}, [autoPlay]);
 
-  const PlayStatusIcon = getIconByPlayerStatus(playStatus); // Replace with actual function
+const PlayStatusIcon = getIconByPlayerStatus(isPlaying); // Replace with actual function
 
   // const isLoopEnable = loopStatus === Player.Status.LOOP; // Replace with actual comparison
   // const isMuteEnable = muteStatus === Player.Status.MUTE; // Replace with actual comparison
 
   return (
-    <React.Fragment>
+    <Container
+     sx={{
+      display: 'flex',
+      width:{width},
+      zIndex: '1230',
+      justifyContent:'center',
+      alignItems:'center',
+      position: 'absolute',
+      top: {top},
+      right: {right},
+      left: {left},
+      bottom: {bottom},
+     }}
+    >
         <audio
           ref={node => (playerRef.current = node)}
-          controls={true}
+          controls
           preload="true"
-          hidden={true}
-        >
-          <source src={src} />
-        </audio>
+          hidden        
+          src={episodeFile} 
+        />
         <Paper
           square={!rounded}
           elevation={1}
@@ -104,27 +117,27 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
             height
           }}
         >
-          <Grid sx={{alignItems:"center", justify:"center", padding: 2}} spacing={0} container>
+          <Grid sx={{alignItems:"center", justify:"center", padding: 2}} spacing={4} container>
             <Grid xs={1} item>
               <Loop
-                onClick={() => triggerAction(Player.Status.LOOP)}
+                onClick={togglePlayLoop}
                 focusable="true"
               />
             </Grid>
             <Grid xs={1} item>
               <PlayStatusIcon
-                onClick={() => triggerAction(Player.Status.PLAY)}
+                onClick={togglePlayPause}
                 focusable="true"
               />
             </Grid>
             <Grid xs={1} item>
               <VolumeMute
-                onClick={() => triggerAction(Player.Status.MUTE)}
+                onClick={togglePlayMute}
                 focusable="true"
               />
             </Grid>
             <Grid xs={9} item >
-              <Grid sx={{display:'flex', justifyContent:'center', alignItems:'center'}} spacing={0} direction="row" container>
+              <Grid sx={{display:'flex', justifyContent:'center', alignItems:'center'}} spacing={2} direction="row" container>
                 <Grid           
                   xs={2}
                   item
@@ -164,7 +177,7 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
             </Grid>
           </Grid>
         </Paper>
-      </React.Fragment>
+      </Container>
   );
 };
 

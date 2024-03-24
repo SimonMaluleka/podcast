@@ -47,6 +47,8 @@ const schema = z.object({
 export type FormFields = z.infer<typeof schema>;
 
 export type AppContextProps = {
+  episodeFile: string;
+  setEpisodeFile: React.Dispatch<React.SetStateAction<string>>;
   subscriptions: ShowDetails[];
   setSubscriptions: React.Dispatch<React.SetStateAction<ShowDetails[]>>;
   token: Session | null;
@@ -61,6 +63,14 @@ export type AppContextProps = {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+
+  //Audio player types
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  isMuted: boolean;
+  setIsMuted: React.Dispatch<React.SetStateAction<boolean>>;
+  isLooping: boolean;
+  setIsLooping: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type ContextMenuProps = {
@@ -84,14 +94,20 @@ export type ClassnameTypes = {
 export type AudioPlayerRefProps = {
   playerRef: HTMLAudioElement | null;
 };
+
 export type AudioPlayerProps = {
-  src: string;
   width?: string;
   height?: string;
   rounded?: boolean;
   classes?: Record<string, string>;
   classNames?: ClassnameTypes;
   autoPlay?: boolean;
+  top?: string | number;
+  left?: string | number;
+  right?: string | number;
+  bottom?: string | numbe;
+
+  // setEpisodeFile: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export type Profile = {

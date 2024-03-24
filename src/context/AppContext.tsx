@@ -1,7 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
-import { AppContextProps,  Show } from "../helpers/types";
+import { AppContextProps,  Show, ShowDetails } from "../helpers/types";
 import { Session } from "@supabase/supabase-js";
-
 export const API_BASE_URL = "https://podcast-api.netlify.app"
 
 const AppContext = createContext<AppContextProps | null>(null)
@@ -16,12 +15,18 @@ const useAppContext = ()=>{
 
 const AppContextProvider = ({ children, initialShows }: {children: ReactNode, initialShows: Show[]})=>{
     const [theme, setTheme] = useState(false)
+    const [episodeFile, setEpisodeFile] = useState('')
     const [token, setToken] = useState<Session | null>(null)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [isLoading, setIsLoading ] = useState(true)
     const [shows, setShows] = useState<Show[]>(initialShows)
-    const [subscriptions, setSubscriptions] = useState<Show[]>([])
+    const [subscriptions, setSubscriptions] = useState<ShowDetails[]>([])
     const abortControllerRef = useRef<AbortController | null>(null)
+
+    //Audio player state
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [isMuted, setIsMuted] = useState(false);
+    const [isLooping, setIsLooping] = useState(false); 
     // const getUserProfile = async()=>{
     //     const { data, error} = await supabase.from('profiles').select('avatar_url').eq('id', user.value.id).single()
     // }
@@ -59,7 +64,28 @@ const AppContextProvider = ({ children, initialShows }: {children: ReactNode, in
     }, [])
     
     return (
-        <AppContext.Provider value={{shows, setShows, subscriptions, setSubscriptions,token, setToken, theme, setTheme, isLoading, setIsLoading, mobileMenuOpen, setMobileMenuOpen}}>
+        <AppContext.Provider value={{
+            shows, 
+            setShows, 
+            episodeFile, 
+            setEpisodeFile,
+            isPlaying, 
+            setIsPlaying,
+            isMuted,
+            setIsMuted,
+            isLooping,
+            setIsLooping, 
+            subscriptions, 
+            setSubscriptions,
+            token, 
+            setToken, 
+            theme, 
+            setTheme, 
+            isLoading, 
+            setIsLoading, 
+            mobileMenuOpen, 
+            setMobileMenuOpen
+            }}>
             {children}
         </AppContext.Provider>
     )

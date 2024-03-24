@@ -2,12 +2,13 @@ import { API_BASE_URL, useAppContext } from '../context/AppContext'
 import { useParams } from 'react-router-dom'
 import { Box, Button, Card, CardContent, CardMedia, Container, Divider, IconButton, Typography } from '@mui/material';
 import BackButton from '../components/show/showdetails/BackButton';
-import { Add, PlayArrow } from '@mui/icons-material';
+import { PlayArrow } from '@mui/icons-material';
 import ShowMenuOptions from '../components/show/showdetails/ShowMenuOptions';
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { ShowDetails } from '../helpers/types';
 import { useEffect, useRef, useState } from 'react';
 import SeasonsAccordions from '../components/show/showdetails/SeasonsAccordions';
+import AudioPlayerFunctional from '../components/audioplayer';
 
 
 const ShowDetailsPage = () => {
@@ -40,12 +41,12 @@ const ShowDetailsPage = () => {
             // }            
         }
   
-        useEffect(() => {
-          fetchShowDetails(id!)      
-        }, [id])
+  useEffect(() => {
+    fetchShowDetails(id!)      
+  }, [id])
         
   // const show = shows.find((show: Show) => show.id === id)
-
+  
   return (
     <Container sx={{mt: 14}}>
         <Box sx={{ 
@@ -91,7 +92,7 @@ const ShowDetailsPage = () => {
               />
             <CardContent className='flex flex-col items-center justify-between'>
               <Typography gutterBottom variant="h5" component="div">
-                  { showDetails?.title}
+                { showDetails?.title}
               </Typography>
               <Typography>
                 {showDetails?.description}
@@ -108,22 +109,28 @@ const ShowDetailsPage = () => {
                   Latest Episode
               </Button>
             </CardContent>
-          </Card>
+        </Card>
+        <Box sx={{height: '200px', display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <IconButton 
-            onClick={()=>{}} 
-            sx={{ 
-              borderRadius: "8px", 
-              display:'flex',
-              justifyContent:'center',
-              alignItems:'center',
-              marginTop: '4px'
-            }}>
-            <Typography variant='h5'>Seasons</Typography>
-            <NavigateNextIcon type="Large" sx={{color:'#ffc965'}} />
-          </IconButton>
-          <Divider />
-          {/* List of episodes or seasons */}
-          <SeasonsAccordions seasons={showDetails?.seasons} />
+          onClick={()=>{}} 
+          sx={{ 
+            borderRadius: "8px", 
+            display:'flex',
+            justifyContent:'center',
+            alignItems:'center',
+            marginTop: '4px'
+          }}>
+          <Typography variant='h5'>Seasons</Typography>
+          <NavigateNextIcon type="Large" sx={{color:'#ffc965'}} />
+        </IconButton>
+          <Box sx={{flex: 1,}}>
+            <AudioPlayerFunctional width='900px'/>
+          </Box>
+        </Box>
+        
+        <Divider />
+        {/* List of episodes or seasons */}
+        <SeasonsAccordions seasons={showDetails?.seasons} />
     </Container>
   )
 }

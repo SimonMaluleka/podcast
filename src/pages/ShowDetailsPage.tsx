@@ -123,11 +123,10 @@ const ShowDetailsPage = () => {
           <Typography variant='h5'>Seasons</Typography>
           <NavigateNextIcon type="Large" sx={{color:'#ffc965'}} />
         </IconButton>
-          <Box sx={{flex: 1,}}>
-            <AudioPlayerFunctional width='900px'/>
-          </Box>
+        <Box sx={{flex: 1,}}>
+          <AudioPlayerFunctional width='900px'/>
         </Box>
-        
+        </Box>        
         <Divider />
         {/* List of episodes or seasons */}
         <SeasonsAccordions seasons={showDetails?.seasons} />

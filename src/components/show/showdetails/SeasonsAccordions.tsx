@@ -8,8 +8,8 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { Episode, Season } from '../../../helpers/types';
-import { Box, Button, Card, CardContent, CardHeader, Chip, Container} from '@mui/material';
-import { PlayArrow } from '@mui/icons-material';
+import { Box, Card, CardContent, CardHeader, Chip, Divider} from '@mui/material';
+import { Favorite, PlayArrow } from '@mui/icons-material';
 import { useAppContext } from '../../../context/AppContext';
 
 const Accordion = styled((props: AccordionProps) => (
@@ -66,24 +66,27 @@ export default function SeasonsAccordions({seasons }: { seasons: Season[] | unde
             </AccordionSummary>
             <AccordionDetails>
               { season.episodes.map((episode: Episode, index)=>(                
-                <Card key={index}>
+                <Card key={index} variant='elevation' sx={{my: '18px'}}>
                   <CardHeader title={<Box sx={{display:'flex', alignItems:'center', gap: 2}}><Chip label={`Episode ${episode.episode}`} sx={{background: "#ffc965", color:"white"}}/><Typography variant='h6'>{episode.title}</Typography></Box> }/>
                   <CardContent>
                     <Typography variant='body1'>{episode.description}</Typography>
-                    <Container sx={{mt:4, padding: 1, background:"#ffc965"}}>
-                      <Button
+                    <Box sx={{mt:4, padding: 1, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                      <Chip
+                        clickable
+                        sx={{background: '#6467AA'}}
                         onClick={()=> { 
                           setEpisodeFile(episode.file)
                           // setIsPlaying(true)
                           console.log("file set")
                         }}
-                      ><PlayArrow /> Listen</Button>
+                        label={<Box sx={{display:'flex'}}><PlayArrow sx={{color:'white'}} /><Typography variant={'button'} color={'white'}>Listen</Typography></Box> }
+                       />
+                      <Favorite sx={{color:'red'}}/>
                       {/* <AudioPlayerFunctional src={episode.file} /> */}
-                    </Container>
+                    </Box>
                   </CardContent>
-                  
-                </Card>// 
-                 
+                  <Divider />
+                </Card>                 
               ))}
             </AccordionDetails>
           </Accordion>

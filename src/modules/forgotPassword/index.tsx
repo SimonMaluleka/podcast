@@ -1,25 +1,48 @@
 import { TextField, Button, Container } from '@mui/material'
-import React, { useRef } from 'react'
 import { supabase } from '../../auth/supabase.service'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { AuthError } from '@supabase/supabase-js'
+import { useNavigate } from 'react-router-dom'
+import { FormFields } from '../../helpers/types'
 
 const ForgotPassword = () => {
-    const formRef = useRef()
-    const handleSubmit = async()=>{
-        const newPassword = new FormData(formRef.current)
+    const { 
+    register, 
+    handleSubmit, 
+    formState: { errors, isSubmitting },
+    setError
+    } = useForm<FormFields>()
+    const navigate = useNavigate()
 
+    const onSubmit: SubmitHandler<FormFields> = async (formData)=>{
         try {
-            await supabase.auth.updateUser({
-                password: newPassword.toString()
+            const {error} = await supabase.auth.updateUser({
+                password: formData.password
             })
+            if (error) {
+                throw new AuthError(error.message, error.status)
+            }
+
+            navigate('/login')
         } catch (error) {
             console.log(error)
+            setError("root", 
+      {
+        message: "Invalid login credentials"
+      },
+      {
+        shouldFocus: true
+      }
+      )
         }
     }
   return (
     <Container sx={{mt:  40}} >
-        <form ref={formRef} className='flex flex-col gap-4 mt-10' onSubmit={handleSubmit}>
-        <TextField name={'password'} label={'Enter a new password'} />
-        <Button type={'submit'}>Reset</Button> 
+        <form className='flex flex-col gap-4 mt-10' onSubmit={handleSubmit(onSubmit)}>
+        <TextField label={'Enter a new password'} {...register('password')}/>
+        {errors.password && (<div className="text-red-500">{errors.password.message}</div>)}
+        <Button type={'submit'} disabled={isSubmitting}>{isSubmitting? "Submitting..." :"Reset Password"}</Button> 
+        { errors.root && <div className="text-red-500">{errors.root.message}</div>}
     </form>
     </Container>
     

@@ -2,11 +2,13 @@ import { Menu, MenuItem, Typography } from '@mui/material'
 import { ContextMenuItemsProps, ContextMenuProps } from '../helpers/types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { signOut } from '../auth/supabase.service';
+import { useAppContext } from '../context/AppContext';
 
 const ContextMenu = ({list, htmlElement, setHtmlElementl}: ContextMenuProps ) => {
     const open = Boolean(htmlElement);
     const { id } = useParams()
     const navigate = useNavigate()
+    const { setToken } = useAppContext()
     const handleClose = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         const element = e.currentTarget.firstChild?.textContent
         console.log(element)
@@ -23,7 +25,11 @@ const ContextMenu = ({list, htmlElement, setHtmlElementl}: ContextMenuProps ) =>
           break
           case "Settings": navigate("/settings")
           break
-          case "Logout": signOut()
+          case "Logout": {
+            setToken(null)
+            sessionStorage.removeItem('token')
+            signOut()
+          }
           break
           default: "Mark All as played"
         }

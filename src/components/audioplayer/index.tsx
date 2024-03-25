@@ -84,8 +84,8 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
 
 const PlayStatusIcon = getIconByPlayerStatus(isPlaying); // Replace with actual function
 
-  // const isLoopEnable = loopStatus === Player.Status.LOOP; // Replace with actual comparison
-  // const isMuteEnable = muteStatus === Player.Status.MUTE; // Replace with actual comparison
+  const isLoopEnable = isLooping === playerRef.current?.loop; // Replace with actual comparison
+  const isMuteEnable = isMuted === playerRef.current?.muted; // Replace with actual comparison
 
   return (
     <Container
@@ -104,6 +104,8 @@ const PlayStatusIcon = getIconByPlayerStatus(isPlaying); // Replace with actual 
     >
         <audio
           ref={node => (playerRef.current = node)}
+          loop={isLoopEnable}
+          muted={isMuteEnable}
           controls
           preload="true"
           hidden        

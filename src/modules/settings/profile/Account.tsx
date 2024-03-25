@@ -1,4 +1,3 @@
-import { ArrowRight } from '@mui/icons-material'
 import { Avatar, Box, Container, TextField, Typography } from '@mui/material'
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 

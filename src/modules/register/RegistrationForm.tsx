@@ -27,7 +27,7 @@ const RegistrationForm = () => {
         throw new AuthError(error.message, error.status)
       }
       setToken(data.session)
-      navigate("/")
+      navigate("/login")
     } catch (err: unknown) {
       console.log(err)
       setError("root", 

@@ -5,7 +5,7 @@ import { AuthError } from '@supabase/supabase-js'
 import { useNavigate } from 'react-router-dom'
 import { FormFields } from '../../helpers/types'
 
-const ForgotPassword = () => {
+const ForgotPasswordForm = () => {
     const { 
     register, 
     handleSubmit, 
@@ -37,16 +37,13 @@ const ForgotPassword = () => {
         }
     }
   return (
-    <Container sx={{mt:  40}} >
-        <form className='flex flex-col gap-4 mt-10' onSubmit={handleSubmit(onSubmit)}>
+    <form className='flex flex-col gap-4 mt-10' onSubmit={handleSubmit(onSubmit)}>
         <TextField label={'Enter a new password'} {...register('password')}/>
         {errors.password && (<div className="text-red-500">{errors.password.message}</div>)}
         <Button type={'submit'} disabled={isSubmitting}>{isSubmitting? "Submitting..." :"Reset Password"}</Button> 
         { errors.root && <div className="text-red-500">{errors.root.message}</div>}
-    </form>
-    </Container>
-    
+    </form>    
   )
 }
 
-export default ForgotPassword
+export default ForgotPasswordForm

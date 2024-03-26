@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material"
 import { supabase } from "../../auth/supabase.service"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAppContext } from "../../context/AppContext"
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { FormFields } from "../../helpers/types"
@@ -14,7 +14,10 @@ function LoginForm() {
     formState: { errors, isSubmitting },
     setError
    } = useForm<FormFields>()
+ 
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/"
 
   const onSubmit: SubmitHandler<FormFields> = async (formData)=>{
     try {
@@ -26,8 +29,9 @@ function LoginForm() {
       if (error) {
         throw new AuthError(error.message, error.status)
       }
+      console.log(data.session)
       setToken(data.session)
-      navigate("/")
+      navigate(from, { replace: true})
     } catch (err: unknown) {
       console.log(err)
       setError("root", 
@@ -52,7 +56,7 @@ function LoginForm() {
           label={'Enter your password'} 
           />
           {errors.password && (<div className="text-red-500">{errors.password.message}</div>)}
-        <a href="#" className='flex justify-end text-sm leading-6 text-red-600 hover:text-red-500'>Forgot Password?</a>
+        <a href="/resetpassword" className='flex justify-end text-sm leading-6 text-red-600 hover:text-red-500'>Forgot Password?</a>
         { errors.root && <div className="text-red-500">{errors.root.message}</div>}
         <Button type={'submit'} disabled={isSubmitting}>{isSubmitting? "Submitting..." :"Sign In"}</Button> 
     </form>

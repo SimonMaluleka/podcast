@@ -21,6 +21,13 @@ const RegistrationForm = () => {
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          emailRedirectTo: 'http://localhost:5173/login',
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+          }
+        }
       });
 
       if (error) {
@@ -43,6 +50,14 @@ const RegistrationForm = () => {
 
   return (
     <form className='flex flex-col gap-4 mt-10' onSubmit={handleSubmit(onSubmit)}>
+        <TextField {...register('firstName')} 
+        type="text" 
+        label={'Enter your first name'} />
+        {errors.firstName && (<div className="text-red-500">{errors.firstName.message}</div>)}
+        <TextField {...register('lastName')} 
+        type="text" 
+        label={'Enter your last name'} />
+        {errors.lastName && (<div className="text-red-500">{errors.lastName.message}</div>)}
         <TextField {...register('email')} 
         type="text" 
         label={'Enter your email address'} />

@@ -2,6 +2,8 @@ import { Box } from '@mui/material'
 import ContinueWithAuthProvider from '../../../modules/common/ContinueWithProvider'
 import LoginForm from '../../../modules/login/LoginForm'
 import LogoSection from '../../../modules/login/LogoSection'
+import { Google } from '@mui/icons-material'
+
 
 const LoginPage = () => {
   return (
@@ -23,7 +25,7 @@ const LoginPage = () => {
             >
               <LogoSection />
               <LoginForm />
-              <ContinueWithAuthProvider name='Google'/>
+              <ContinueWithAuthProvider name='Google' logo={<Google />}/>
             </Box>
       </Box>
       <Box>

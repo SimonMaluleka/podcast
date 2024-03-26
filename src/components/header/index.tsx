@@ -1,186 +1,188 @@
-import { AppBar, Box, Button, CssBaseline, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from "@mui/material"
-import { useAppContext } from "../../context/AppContext"
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { RoutesEnum } from '../../routes';
 import Logo from'../../assets/logo.png'
-import { Menu } from "@mui/icons-material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { RoutesEnum } from "../../routes";
-import ProfileAvatar from "../profile/ProfileAvatar";
+import { useAppContext } from '../../context/AppContext';
+import { supabase } from '../../auth/supabase.service';
 
-const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact'];
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
+const pages = ['Favorites', 'Pricing', 'Blog'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const Header = (props: Props) => {
-  const { mobileMenuOpen, setMobileMenuOpen, token } = useAppContext()
-  const { window } = props
-  const location = useLocation();
-  const handleDrawerToggle = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-  const drawer = (
-    <Box 
-        onClick={handleDrawerToggle} 
-        sx={{ 
-            textAlign: 'center', 
-            display: 'flex', 
-            flexDirection: 'column',
-            justifyContent: 'space-between'
-         }}
-    >
-      <Box sx={{
-        display: {xs: 'flex',},
-        flexDirection:"column",
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingY: 4,
-        backgroundColor:'#6467AA'
-      }}>
-        <img
-        src={Logo}
-        width={80}
-        alt="Podcast Streamer"
-        loading="lazy"
-        />
-        <Typography
-            variant="h6"
-            component="div" 
-            sx={{color:'white'}}           
-            >
-              Podcast Streamer
-            </Typography>
-      </Box>
-      <Box sx={{
-        display: "flex",
-        flexDirection:"column",
-        justifyContent: "space-between",
-        height:"490px"
-      }}>
-        <List sx={{flex: 1}}>
-            {navItems.map((item) => (
-            <ListItem key={item} disablePadding>
-                <ListItemButton sx={{ textAlign: 'center', color: '#6467AA' }}>
-                <ListItemText primary={item} />
-                </ListItemButton>
-            </ListItem>
-            ))}
-        </List>
-        <Box sx={{ display: 'block', justifyItems: "flex-end"  }}>
-            <Button variant="text" sx={{backgroundColor: "#ffc965", margin: 1, width:"100%", color:"white"}}>
-              <span>
-                 Login <span aria-hidden="true"> &rarr;</span>
-              </span>
-            </Button>
-        </Box>
-        </Box>
-    </Box>)
-  const container = window !== undefined ? () => window().document.body : undefined;
+function ResponsiveAppBar() {
+  const { token, setToken } = useAppContext()
   const navigate = useNavigate()
+  const location = useLocation();
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  if (location.pathname === '/login') {
+  const fullName = token?.user.user_metadata.first_name + " " + token?.user.user_metadata.last_name
+
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    setAnchorElUser(null);
+    const element = event.currentTarget.firstChild?.textContent
+        console.log(element)
+        switch(element){
+          case "Profile": navigate('/profile')
+          break       
+          case "Account": navigate('/account')
+          break
+          case "History": navigate('/history')
+          break
+          case "Logout": {
+            setToken(null)
+            sessionStorage.removeItem('token')
+            supabase.auth.signOut()
+          }
+          break
+        }
+  }
+
+  if (location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/forgotpassword') {
     return null; // Hide the component
   }
 
   return (
-    <Box sx={{ display: 'flex', width:{sm: '100%'} }}>
-      <CssBaseline />
-      <AppBar component="nav">
-        <Toolbar>
-          <Box sx={{ 
-            paddingTop:"1rem",
-            width: "100%",
-            flex: 1, 
-            display:'flex', 
-            flexDirection:"column", 
-            justifyContent:"center", 
-            alignItems:"center",  
-            color: '#fff'
-            }}>
-                <Link to={RoutesEnum.Home} className="flex flex-col justify-center items-center">
-                  <img
-                  src={Logo}
-                  width={50}
-                  alt="Podcast Streamer"
-                  loading="lazy"
-                  />
-
-                  <Typography
-                  variant="h6"
-                  component="div" 
-                  sx={{}}           
-                  >
-                      Podcast Streamer
-                  </Typography>
-                </Link>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={handleDrawerToggle}
-                    sx={{display: { sm: 'none' } }}
-                    >
-                    <span className="sr-only" hidden>Open main menu</span>
-                    <Menu  className={`h-6 w-12 text-[#ffc965]`} aria-hidden="true" />
-                </IconButton>
+    <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }}}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
           </Box>
-          
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            { token == null ? <Button variant="text" onClick={()=>navigate(RoutesEnum.Login)}>
-              <span className="font-semibold text-white">
-                Login <span aria-hidden="true"> &rarr;</span>
-              </span>
-            </Button>:
-            <Box sx={{display:'flex'}}>
-             <Button variant="text" onClick={()=>navigate(RoutesEnum.Favorites)}>
-              <span className="font-semibold text-white flex items-center">
-                Favorites
-              </span>
+          <Box sx={{ 
+              flexGrow: 1,
+              paddingTop:"1rem",
+              display: 'flex', 
+              flexDirection:"column", 
+              justifyContent:"center", 
+              alignItems:"flex-start",  
+              color: '#fff'
+              }}>
+                  <Link to={RoutesEnum.Home} className="flex flex-col justify-center items-center">
+                    <img
+                    src={Logo}
+                    width={50}
+                    alt="Podcast Streamer"
+                    loading="lazy"
+                    />
+
+                    <Typography
+                    variant="h6"
+                    component="div" 
+                    sx={{}}           
+                    >
+                        Podcast Streamer
+                    </Typography>
+                  </Link>
+          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                {page}
               </Button>
-              <ProfileAvatar />
-              {/* <Button 
-                variant="contained" 
-                sx={{backgroundColor: "#ffc965"}}
-                onClick={()=>{
-                  signOut()
-                  setToken(null)
-                  sessionStorage.removeItem("token")
-                  navigate(RoutesEnum.Home)
-                }
-              }>
-                <span className="font-semibold text-white flex items-center">
-                  Logout
-                </span>
-              </Button> */}
-            </Box>
-            }
+            ))}
+          </Box>
+
+          <Box sx={{ flexGrow: 0 }}>
+            { token == null ? 
+            <Tooltip title="Login">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Typography sx={{color:'white', fontWeight: 700}}>Login <span>&rarr;</span></Typography>
+              </IconButton>
+            </Tooltip>
+            :<>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt={fullName} src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+            </>
+          }
           </Box>
         </Toolbar>
-      </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileMenuOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
-      
-    </Box>  
-  )
+      </Container>
+    </AppBar>
+  );
 }
-
-export default Header
+export default ResponsiveAppBar;

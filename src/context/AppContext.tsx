@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
-import { AppContextProps,  Show, ShowDetails } from "../helpers/types";
+import { AppContextProps,  FavoriteProp,  Show, ShowDetails } from "../helpers/types";
 import { Session } from "@supabase/supabase-js";
+import { supabase } from "../auth/supabase.service";
 export const API_BASE_URL = "https://podcast-api.netlify.app"
 
 const AppContext = createContext<AppContextProps | null>(null)
@@ -15,6 +16,7 @@ const useAppContext = ()=>{
 
 const AppContextProvider = ({ children, initialShows }: {children: ReactNode, initialShows: Show[]})=>{
     const [theme, setTheme] = useState(false)
+    const [favorites, setFavorites] = useState<FavoriteProp[]>([])
     const [episodeFile, setEpisodeFile] = useState('')
     const [token, setToken] = useState<Session | null>(null)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -22,7 +24,7 @@ const AppContextProvider = ({ children, initialShows }: {children: ReactNode, in
     const [shows, setShows] = useState<Show[]>(initialShows)
     const [subscriptions, setSubscriptions] = useState<ShowDetails[]>([])
     const abortControllerRef = useRef<AbortController | null>(null)
-
+    // console.log(sessionStorage.getItem('token'))
     //Audio player state
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
@@ -32,14 +34,27 @@ const AppContextProvider = ({ children, initialShows }: {children: ReactNode, in
     // }
     if(token){
         sessionStorage.setItem('token', JSON.stringify(token) )
-
     }
 
     useEffect(() => {
-        if(sessionStorage.getItem('token')){
-            const data = JSON.parse(sessionStorage.getItem('token')!)
-            
+        const fetchFavorites = async()=>{
+            const userId = await (await supabase.auth.getUser()).data.user?.id                        
+            const { data , error } = await supabase
+            .from('favorites')
+            .select('*')
+            .eq('user', userId )
+
+            if(error){
+                console.log("Error fetcing favorites", error.message)
+            }
+
+            setFavorites(data!)
+        }
+
+        if(sessionStorage.getItem('token')!=null){
+            const data = JSON.parse(sessionStorage.getItem('token')!)            
             setToken(data)
+            fetchFavorites()
         }
         
         const fetchShows = async() => {
@@ -69,6 +84,8 @@ const AppContextProvider = ({ children, initialShows }: {children: ReactNode, in
             setShows, 
             episodeFile, 
             setEpisodeFile,
+            favorites, 
+            setFavorites,
             isPlaying, 
             setIsPlaying,
             isMuted,

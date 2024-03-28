@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { AudioPlayerProps } from '../../helpers/types';
+import { AudioPlayerProps, Episode } from '../../helpers/types';
 import { getCurrentTime, getFormattedTime, getIconByPlayerStatus } from './utils';
 import { Loop, VolumeMute } from '@mui/icons-material';
 import { Paper, Grid, Typography, Slider, Container } from '@mui/material';
@@ -16,9 +16,11 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
   left,
   bottom 
 }: AudioPlayerProps) => {
+    const [currentFile, setCurrentFile] = useState<Episode | null>(null);
+    const [playProgress, setPlayProgress] = useState<{ [id: string]: number }>({});
     const [duration, setDuration] = useState(0)
-    const [current, setCurrent] = useState(0)
-    const [progress, setProgress] = useState(0)
+    const playerRef = useRef<HTMLAudioElement | null>(null);
+    
     const { episodeFile, 
             isPlaying,
             setIsPlaying, 
@@ -27,7 +29,40 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
             isMuted, 
             setIsMuted 
           } = useAppContext()
-    const playerRef = useRef<HTMLAudioElement | null>(null);
+    
+    useEffect(() => {
+    if (playerRef.current) {
+      playerRef.current.volume = 0.1; // Start at low volume
+      const fadeInterval = setInterval(() => {
+        if (playerRef.current && playerRef.current.volume < 1) {
+          playerRef.current.volume += 0.1; // Increase volume
+        } else {
+          clearInterval(fadeInterval); // Stop when volume is max
+        }
+      }, 200); // Increase volume every 200ms
+
+      return () => clearInterval(fadeInterval); // Clean up on unmount
+    }
+  }, [currentFile]);
+
+  useEffect(() => {
+    if (playerRef.current && currentFile) {
+      playerRef.current.currentTime = playProgress[currentFile.episode] || 0; // Set time to saved progress
+    }
+  }, [currentFile, playProgress]);
+
+  const handleClick = (file: Episode) => {
+    if (playerRef.current && currentFile) {
+      setPlayProgress({
+        ...playProgress,
+        [currentFile.episode]: playerRef.current.currentTime, // Save progress
+      });
+      playerRef.current.pause();
+      playerRef.current.currentTime = 0; // Reset time
+      playerRef.current.volume = 0.1; // Reset volume
+    }
+    setCurrentFile(file); // Set new file
+  };
 
   const togglePlayPause = () => {
     if (playerRef.current) {
@@ -61,26 +96,17 @@ const AudioPlayerFunctional: React.FC<AudioPlayerProps> = ({
       setIsMuted(!isMuted);
     }
   };
-  const handleChange = (progress: number | number[], player: HTMLAudioElement) => {
+  const handleChange = (file: Episode, playProgress: number | number[], player: HTMLAudioElement) => {
     if (player) {
-      const currentTime = getCurrentTime(progress as number, player.duration);
+      const currentTime = getCurrentTime(playProgress as number, player.duration);
 
       if (!isNaN(currentTime)) {
         player.currentTime = currentTime;
       }
 
-      setProgress(currentTime);
+      setPlayProgress({[file.episode]: currentTime});
     }
   };
-  
-  useEffect(() => {
-    // handleCanPlay(playerRef.current!)
-    if (playerRef.current) {
-      if (autoPlay) {
-        playerRef.current.play        
-      }
-    }
-}, [autoPlay]);
 
 const PlayStatusIcon = getIconByPlayerStatus(isPlaying); // Replace with actual function
 
@@ -159,7 +185,7 @@ const PlayStatusIcon = getIconByPlayerStatus(isPlaying); // Replace with actual 
                 >
                   <Slider                    
                     color="secondary"
-                    value={progress}                    
+                    value={playProgress[episodeFile]}                    
                     onChange={(_, position: number | number[]) => handleChange(position, playerRef.current!)}
                   />
                 </Grid>

@@ -40,6 +40,15 @@ export type ShowDetails = {
   updated: Date;
 };
 
+export interface FavoriteProp {
+  id: number;
+  episode: number;
+  description: string;
+  season: number;
+  image: string;
+  user: string;
+  createdAt: string;
+}
 const schema = z.object({
   firstName: z.string().min(2),
   lastName: z.string().min(2),
@@ -49,6 +58,8 @@ const schema = z.object({
 export type FormFields = z.infer<typeof schema>;
 
 export type AppContextProps = {
+  favorites: FavoriteProp[];
+  setFavorites: React.Dispatch<React.SetStateAction<FavoriteProp[]>>;
   episodeFile: string;
   setEpisodeFile: React.Dispatch<React.SetStateAction<string>>;
   subscriptions: ShowDetails[];

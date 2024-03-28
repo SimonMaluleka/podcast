@@ -36,7 +36,14 @@ function ResponsiveAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    const clickSource = event.currentTarget.firstChild?.textContent
+
+    switch(clickSource?.toLocaleLowerCase()){
+      case "favorites": navigate('/favorites')
+      break
+    }
+    console.log(clickSource)
     setAnchorElNav(null);
   };
 
@@ -134,7 +141,7 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={()=>handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
@@ -143,9 +150,10 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+            
             { token == null ? 
             <Tooltip title="Login">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={()=>navigate('/login')} sx={{ p: 0 }}>
                 <Typography sx={{color:'white', fontWeight: 700}}>Login <span>&rarr;</span></Typography>
               </IconButton>
             </Tooltip>

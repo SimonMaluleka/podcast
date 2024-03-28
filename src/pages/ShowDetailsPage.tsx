@@ -1,6 +1,6 @@
 import { API_BASE_URL, useAppContext } from '../context/AppContext'
 import { useParams } from 'react-router-dom'
-import { Box, Button, Card, CardContent, CardMedia, Container, Divider, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Container, IconButton, Typography } from '@mui/material';
 import BackButton from '../components/show/showdetails/BackButton';
 import { PlayArrow } from '@mui/icons-material';
 import ShowMenuOptions from '../components/show/showdetails/ShowMenuOptions';
@@ -8,8 +8,6 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { ShowDetails } from '../helpers/types';
 import { useEffect, useRef, useState } from 'react';
 import SeasonsAccordions from '../components/show/showdetails/SeasonsAccordions';
-import AudioPlayerFunctional from '../components/audioplayer';
-
 
 const ShowDetailsPage = () => {
   const { subscriptions, setSubscriptions } = useAppContext()
@@ -110,24 +108,20 @@ const ShowDetailsPage = () => {
               </Button>
             </CardContent>
         </Card>
-        <Box sx={{height: '200px', display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <Box sx={{ display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <IconButton 
-          onClick={()=>{}} 
-          sx={{ 
-            borderRadius: "8px", 
-            display:'flex',
-            justifyContent:'center',
-            alignItems:'center',
-            marginTop: '4px'
-          }}>
-          <Typography variant='h5'>Seasons</Typography>
-          <NavigateNextIcon type="Large" sx={{color:'#ffc965'}} />
-        </IconButton>
-        <Box sx={{flex: 1,}}>
-          <AudioPlayerFunctional width='900px'/>
-        </Box>
+            onClick={()=>{}} 
+            sx={{ 
+              borderRadius: "8px", 
+              display:'flex',
+              justifyContent:'center',
+              alignItems:'center',
+              marginTop: '4px'
+            }}>
+              <Typography variant='h5'>Seasons</Typography>
+              <NavigateNextIcon type="Large" sx={{color:'#ffc965'}} />
+          </IconButton>
         </Box>        
-        <Divider />
         {/* List of episodes or seasons */}
         <SeasonsAccordions seasons={showDetails?.seasons} />
     </Container>

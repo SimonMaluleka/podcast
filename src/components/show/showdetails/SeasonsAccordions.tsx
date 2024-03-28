@@ -68,26 +68,26 @@ export default function SeasonsAccordions({ seasons }: { seasons: Season[] | und
       });
       audioRef.current.pause();
       audioRef.current.currentTime = 0; // Reset time
-      audioRef.current.volume = 0.1; // Reset volume
+      audioRef.current.volume = 0.5; // Reset volume
     }
     setCurrentFile(file); // Set new file
     audioRef.current?.play()
   };
 
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.1; // Start at low volume
-      const fadeInterval = setInterval(() => {
-        if (audioRef.current && audioRef.current.volume < 1) {
-          audioRef.current.volume += 0.1; // Increase volume
-        } else {
-          clearInterval(fadeInterval); // Stop when volume is max
-        }
-      }, 200); // Increase volume every 200ms
+  // useEffect(() => {
+  //   if (audioRef.current) {
+  //     audioRef.current.volume = 0.1; // Start at low volume
+  //     const fadeInterval = setInterval(() => {
+  //       if (audioRef.current && audioRef.current.volume < 1) {
+  //         audioRef.current.volume += 0.1; // Increase volume
+  //       } else {
+  //         clearInterval(fadeInterval); // Stop when volume is max
+  //       }
+  //     }, 200); // Increase volume every 200ms
 
-      return () => clearInterval(fadeInterval); // Clean up on unmount
-    }
-  }, [currentFile]);
+  //     return () => clearInterval(fadeInterval); // Clean up on unmount
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (audioRef.current && currentFile) {
@@ -140,8 +140,8 @@ export default function SeasonsAccordions({ seasons }: { seasons: Season[] | und
   return (
     <> 
       <Box sx={{width:'100%',display:'flex', alignItems: 'center', justifyContent:'center', background: '#ffc965'}}>
-        <Typography variant='h5' sx={{color: 'white', mx: '100px', width: '600px'}}>
-          <marquee>{currentFile?.title}</marquee>
+        <Typography variant='h4' sx={{color: '#6467AA', mr: '100px', ml: '50px',width: '600px'}}>
+          <marquee >{currentFile?.title}</marquee>
         </Typography>
         <AudioPlayer audioFile={currentFile!}  audioRef={audioRef} />  
       </Box>    
@@ -157,7 +157,7 @@ export default function SeasonsAccordions({ seasons }: { seasons: Season[] | und
                   <CardHeader title={<Box sx={{display:'flex', alignItems:'center', gap: 2}}><Chip label={`Episode ${episode.episode}`} sx={{background: "#ffc965", color:"white"}}/><Typography variant='h6'>{episode.title}</Typography></Box> }/>
                   <CardContent>
                     <Typography variant='body1'>{episode.description}</Typography>
-                    <Typography variant='body1'>{episode.episode}</Typography>
+                    {/* <Typography variant='body1'>{episode.episode}</Typography> */}
                     <Box sx={{mt:4, padding: 1, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                       <Chip
                         clickable
